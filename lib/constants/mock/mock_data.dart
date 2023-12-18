@@ -1,3 +1,3 @@
-List<Map<String, dynamic>> tasksList = [
+List<Map<String, dynamic>> tasksListMock = [
   {},
 ];

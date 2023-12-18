@@ -1,20 +1,65 @@
 part of 'tasks_bloc.dart';
 
-class TasksState {
+class TaskState {
+  final String icon;
   final LoadingStatus status;
-  final List<TaskEntity> tasks;
-  const TasksState({
+  final LoadingStatus taskCreationStatus;
+  final List<ModeTaskModel> upcomingTasks;
+  final List<ModeTaskModel> allTasks;
+  final List<ModeTaskModel> searchedTasks;
+  final bool isSearching;
+
+  TaskState({
+    required this.icon,
     required this.status,
-    required this.tasks,
+    required this.allTasks,
+    required this.upcomingTasks,
+    required this.taskCreationStatus,
+    required this.isSearching,
+    required this.searchedTasks,
   });
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is TasksState &&
-        listEquals(other.tasks, tasks) &&
-        other.status == status;
+    return other is TaskState &&
+        other.status == status &&
+        other.taskCreationStatus == taskCreationStatus &&
+        listEquals(other.upcomingTasks, upcomingTasks) &&
+        listEquals(other.allTasks, allTasks) &&
+        listEquals(other.searchedTasks, searchedTasks) &&
+        other.isSearching == isSearching&&
+        other.icon == icon;
   }
+
   @override
-  int get hashCode => tasks.hashCode ^ status.hashCode;
+  int get hashCode {
+    return status.hashCode ^
+    taskCreationStatus.hashCode ^
+    upcomingTasks.hashCode ^
+    allTasks.hashCode ^
+    searchedTasks.hashCode ^
+    isSearching.hashCode;
+  }
+
+  TaskState copyWith({
+    String? icon,
+    LoadingStatus? status,
+    LoadingStatus? taskCreationStatus,
+    List<ModeTaskModel>? upcomingTasks,
+    List<ModeTaskModel>? allTasks,
+    List<ModeTaskModel>? searchedTasks,
+    bool? isSearching,
+  }) {
+    return TaskState(
+      icon: icon?? this.icon,
+      status: status ?? this.status,
+      taskCreationStatus: taskCreationStatus ?? this.taskCreationStatus,
+      upcomingTasks: upcomingTasks ?? this.upcomingTasks,
+      allTasks: allTasks ?? this.allTasks,
+      searchedTasks: searchedTasks ?? this.searchedTasks,
+      isSearching: isSearching ?? this.isSearching,
+    );
+  }
 }
