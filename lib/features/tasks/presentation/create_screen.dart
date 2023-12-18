@@ -222,6 +222,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             ),
                             decoration: BoxDecoration(
                               color: getPriorityColorByIndex(index),
+                              border: Border.all(
+                                color: getPriorityColorByIndex(index),
+
+                              )
                             ),
                             child: Text(
                               getPriorityByIndex(index),
@@ -307,6 +311,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 priority: priority!,
                                 onSuccess: () {
                                   // Navigator.of(context).pop();
+                                  Navigator.of(context).pushNamed(AppRoutes.tasks);
                                 },
                                 onFailure: (errorMessage) {
                                   print(errorMessage);
