@@ -20,6 +20,11 @@ class CreateTaskScreen extends StatefulWidget {
 }
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
+  final list = [
+    'assets/icons/gym.svg',
+    'assets/icons/meet.svg',
+    'assets/icons/study.svg',
+  ];
   late TextEditingController titleController;
   late TextEditingController noteController;
   final random = Random();
@@ -47,6 +52,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           ),
           body: BlocBuilder<TasksBloc, TaskState>(
             builder: (context, state) {
+              print("${state.icon} :icon");
+
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -72,13 +79,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                         behavior: HitTestBehavior.opaque,
                                         onTap: () {
                                           context.read<TasksBloc>().add(ChangeIcon(index: index));
-                                          print("${state.icon} :icon");
-
                                           Navigator.of(modalBottomSheetContext)
                                               .pop();
+                                          icon = state.icon;
                                         },
                                         child: SvgPicture.asset(
-                                          state.icon,
+                                          list[index],
                                         ),
                                       ),
                                     ),
@@ -100,7 +106,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                               ),
                             ),
                             child:
-                                icon != null ? SvgPicture.asset(icon!) : null,
+                                 SvgPicture.asset(state.icon) ,
                           ),
                         ),
                         const Gap(10),
@@ -123,7 +129,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             );
 
                             final day = await showDatePicker(
-                              context: context,
+                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime.now(),
                               lastDate: DateTime(2024),
@@ -231,6 +237,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     MaterialButton(
                       onPressed: () {
                         if (icon == null) {
+                          print(icon);
                           ScaffoldMessenger.of(context).showMaterialBanner(
                             MaterialBanner(
                               onVisible: () async {
@@ -299,7 +306,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 note: noteController.text,
                                 priority: priority!,
                                 onSuccess: () {
-                                  Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                 },
                                 onFailure: (errorMessage) {
                                   print(errorMessage);
@@ -321,8 +328,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 },
                               ),
                             );
-                        Navigator.pushReplacementNamed(
-                            context, AppRoutes.tasks);
+
                       },
                       child: const Text(
                         'Create task',
